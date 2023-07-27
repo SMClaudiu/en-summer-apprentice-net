@@ -9,10 +9,10 @@ namespace TicketingApp.Repository
     {
         IEnumerable<Event> GetAll();
 
-        Event GetOrderById(int id);
+        Event GetEventById(int id);
 
         void Add(Event ev);
         void Update(Event ev);
-        void Delete(int id);
+        void Delete(Event ev);        
     }
 }

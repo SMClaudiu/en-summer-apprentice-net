@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using TicketingApp.Models;
 
@@ -13,7 +14,7 @@ namespace TicketingApp.Repository
             _dbContext = new JavaEndavaContext();
 
         }
-        public void Add(Event ev)
+        public async void Add(Event ev)
         {
             try
             {
@@ -27,11 +28,22 @@ namespace TicketingApp.Repository
             }
         }
 
-        public Event GetOrderById(int id)
+        public IEnumerable<Event> GetAll()
+        {
+            var ev = _dbContext.Events.Include(e => e.Venue).Include(et => et.EventType).Include(tc => tc.TicketCategories);
+
+            if(ev != null)
+            {
+                return ev;
+            }
+            return null;
+        }
+
+        public Event GetEventById(int id)
         {
             try
             {
-                var ev = _dbContext.Events.FirstOrDefault(e => e.EventId == id);
+                var ev =  _dbContext.Events.Include(e => e.TicketCategories).FirstOrDefault(e => e.EventId == id);
                 if (ev != null)
                 {
                     return ev;
@@ -45,26 +57,14 @@ namespace TicketingApp.Repository
             }
         }
 
-        public void Delete(int id)
+        public void Delete(Event ev)
         {
-            try
-            {
-                var ev = GetOrderById(id);
-                if (ev != null)
-                {
-                    _dbContext.Events.Remove(ev);
-                    _dbContext.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message + Environment.NewLine);
-            }
-        }
+            if(GetEventById(ev.EventId) != null) {
+                Console.WriteLine("Nu exista in db");
 
-        public IEnumerable<Event> GetAll()
-        {
-            throw new NotImplementedException();
+                _dbContext.Remove(ev);
+                _dbContext.SaveChanges(true);
+            }
         }
 
 
@@ -73,7 +73,7 @@ namespace TicketingApp.Repository
         {
             try
             {
-                var tempEv = GetOrderById(ev.EventId);
+                var tempEv = GetEventById(ev.EventId);
                 if (tempEv != null)
                 {
                     _dbContext.Entry(tempEv).State = EntityState.Modified;
