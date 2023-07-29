@@ -14,7 +14,7 @@ namespace TicketingApp.Repository
 
         void Update(Order order);
 
-        void Delete(int id);
+        void Delete(Order order);
 
     }
 }

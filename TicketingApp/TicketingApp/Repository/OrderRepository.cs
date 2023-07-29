@@ -27,12 +27,11 @@ namespace TicketingApp.Repository
             }
         }
 
-        public void Delete(int id)
+        public void Delete(Order order)
         {
             try
             {
-                var order = GetOrderById(id);
-                if (order != null)
+                if (GetOrderById(order.OrderId) != null)
                 {
                     _dbContext.Orders.Remove(order);
                     _dbContext.SaveChanges();
@@ -46,14 +45,19 @@ namespace TicketingApp.Repository
 
         public IEnumerable<Order> GetAll()
         {
-            throw new NotImplementedException();
-        }
+            var tempOrders = _dbContext.Orders.Include(o=>o.Customer);
+            if(tempOrders != null)
+            {
+                return tempOrders;
+            }
+            return null;
+        }   
 
         public Order GetOrderById(int id)
         {
             try
             {
-                var order = _dbContext.Orders.FirstOrDefault(o => o.OrderId == id);
+                var order = _dbContext.Orders.Include(o => o.Customer).FirstOrDefault(o => o.OrderId == id);
                 if (order != null)
                 {
                     return order;

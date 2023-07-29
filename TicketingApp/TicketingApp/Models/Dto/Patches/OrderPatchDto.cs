@@ -1,6 +1,6 @@
-﻿namespace TicketingApp.Models.Dto
+﻿namespace TicketingApp.Models.Dto.Patches
 {
-    public class OrderDto
+    public class OrderPatchDto
     {
         public int OrderId { get; set; }
 

@@ -43,7 +43,7 @@ namespace TicketingApp.Repository
         {
             try
             {
-                var ev =  _dbContext.Events.Include(e => e.TicketCategories).FirstOrDefault(e => e.EventId == id);
+                var ev =  _dbContext.Events.Include(e=> e.Venue).Include(e => e.TicketCategories).FirstOrDefault(e => e.EventId == id);
                 if (ev != null)
                 {
                     return ev;
@@ -60,14 +60,10 @@ namespace TicketingApp.Repository
         public void Delete(Event ev)
         {
             if(GetEventById(ev.EventId) != null) {
-                Console.WriteLine("Nu exista in db");
-
                 _dbContext.Remove(ev);
                 _dbContext.SaveChanges(true);
             }
         }
-
-
 
         public void Update(Event ev)
         {

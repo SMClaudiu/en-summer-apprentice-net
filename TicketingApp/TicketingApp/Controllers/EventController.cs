@@ -20,7 +20,7 @@ namespace TicketingApp.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/GetById")]
+        [Route("api/[controller]/GetEVentById")]
 
         public ActionResult<EventDto> GetById(int id)
         {
@@ -30,7 +30,7 @@ namespace TicketingApp.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/GetAll")]
+        [Route("api/[controller]/GetAllEvents")]
 
         public async Task<ActionResult<List<EventDto>>> GetAll() {
             var ev =  _eventRepository.GetAll();
@@ -55,7 +55,7 @@ namespace TicketingApp.Controllers
 
 
         [HttpPatch]
-        [Route("api/[controller]/Patch")]
+        [Route("api/[controller]/EventPatch")]
         public async Task<ActionResult<EventPatchDto>> Patch(EventPatchDto epd)
         {
             if(epd != null)
