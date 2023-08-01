@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 
 using TicketingApp.Models;
+using TicketingApp.Repository;
 
 namespace TicketingApp.Repository
 {
@@ -18,8 +19,17 @@ namespace TicketingApp.Repository
         {
             try
             {
-                _dbContext.Add(order);
-                _dbContext.SaveChanges();
+                var tempOrder = GetOrderById(order.OrderId);
+                if (tempOrder == null)
+                {
+                    _dbContext.Add(order);
+                    _dbContext.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("The order already exists");
+                }
+                
             }
             catch (Exception ex)
             {
@@ -43,9 +53,9 @@ namespace TicketingApp.Repository
             }
         }
 
-        public IEnumerable<Order> GetAll()
+        public  IEnumerable<Order> GetAll()
         {
-            var tempOrders = _dbContext.Orders.Include(o=>o.Customer);
+            var tempOrders =  _dbContext.Orders.Include(o=>o.Customer);
             if(tempOrders != null)
             {
                 return tempOrders;
@@ -53,11 +63,11 @@ namespace TicketingApp.Repository
             return null;
         }   
 
-        public Order GetOrderById(int id)
+        public async Task<Order> GetOrderById(int id)
         {
             try
             {
-                var order = _dbContext.Orders.Include(o => o.Customer).FirstOrDefault(o => o.OrderId == id);
+                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.OrderId == id);
                 if (order != null)
                 {
                     return order;
@@ -72,7 +82,7 @@ namespace TicketingApp.Repository
 
         }
 
-        public void Update(Order order)
+        public async void Update(Order order)
         {
             try
             {

@@ -124,11 +124,11 @@ public partial class JavaEndavaContext : DbContext
 
         modelBuilder.Entity<TicketCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TicketCa__56F2E61A9C38E058");
+            entity.HasKey(e => e.TicketCategoryId).HasName("PK__TicketCa__56F2E61A9C38E058");
 
             entity.ToTable("TicketCategory");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TicketCategoryId).HasColumnName("ticketCategoryId");
             entity.Property(e => e.Description)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -153,9 +153,9 @@ public partial class JavaEndavaContext : DbContext
 
         modelBuilder.Entity<Venue>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Venues__4DDFB6FFCEE31BB4");
+            entity.HasKey(e => e.VenueId).HasName("PK__Venues__4DDFB6FFCEE31BB4");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.VenueId).HasColumnName("venueId");
             entity.Property(e => e.Capacity).HasColumnName("capacity");
             entity.Property(e => e.Location)
                 .HasMaxLength(50)

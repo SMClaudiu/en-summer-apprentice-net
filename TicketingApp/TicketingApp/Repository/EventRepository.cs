@@ -2,6 +2,8 @@
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using TicketingApp.Models;
+using TicketingApp.Models.Dto.Posts;
+using TicketingApp.Repository;
 
 namespace TicketingApp.Repository
 {
@@ -14,13 +16,20 @@ namespace TicketingApp.Repository
             _dbContext = new JavaEndavaContext();
 
         }
-        public async void Add(Event ev)
+        public void Add(Event ev)
         {
             try
             {
-                _dbContext.Events.Add(ev);
-                _dbContext.SaveChanges();
-
+                var tempEv = GetEventById(ev.EventId);
+                if(tempEv == null)
+                {
+                    _dbContext.Events.Add(ev);
+                    _dbContext.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("The event already exists");
+                }
             }
             catch (Exception ex)
             {
@@ -32,7 +41,7 @@ namespace TicketingApp.Repository
         {
             var ev = _dbContext.Events.Include(e => e.Venue).Include(et => et.EventType).Include(tc => tc.TicketCategories);
 
-            if(ev != null)
+            if (ev != null)
             {
                 return ev;
             }
@@ -43,7 +52,7 @@ namespace TicketingApp.Repository
         {
             try
             {
-                var ev =  _dbContext.Events.Include(e=> e.Venue).Include(e => e.TicketCategories).FirstOrDefault(e => e.EventId == id);
+                var ev =  _dbContext.Events.Include(e=> e.Venue).Include(et=> et.EventType).Include(e => e.TicketCategories).FirstOrDefault(e => e.EventId == id);
                 if (ev != null)
                 {
                     return ev;
@@ -57,7 +66,7 @@ namespace TicketingApp.Repository
             }
         }
 
-        public void Delete(Event ev)
+        public async void Delete(Event ev)
         {
             if(GetEventById(ev.EventId) != null) {
                 _dbContext.Remove(ev);
@@ -65,7 +74,7 @@ namespace TicketingApp.Repository
             }
         }
 
-        public void Update(Event ev)
+        public async void Update(Event ev)
         {
             try
             {
@@ -81,5 +90,6 @@ namespace TicketingApp.Repository
                 Console.WriteLine(ex.Message + Environment.NewLine);
             }
         }
+
     }
 }

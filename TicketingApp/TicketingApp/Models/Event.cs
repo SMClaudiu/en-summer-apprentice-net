@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TicketingApp.Models.Dto;
 
 namespace TicketingApp.Models;
 
@@ -19,9 +20,9 @@ public partial class Event
 
     public string? Description { get; set; }
 
-    public virtual EventType EventType { get; set; } = null!;
+    public virtual EventType? EventType { get; set; } = null!;
 
-    public virtual ICollection<TicketCategory> TicketCategories { get; set; } = new List<TicketCategory>();
+    public virtual ICollection<TicketCategory>? TicketCategories { get; set; } = new List<TicketCategory>();
 
-    public virtual Venue Venue { get; set; } = null!;
+    public virtual Venue? Venue { get; set; } = null!;
 }

@@ -5,7 +5,7 @@ namespace TicketingApp.Models;
 
 public partial class Venue
 {
-    public int Id { get; set; }
+    public int VenueId { get; set; }
 
     public string? Location { get; set; }
 

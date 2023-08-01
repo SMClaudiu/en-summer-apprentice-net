@@ -5,7 +5,7 @@
 
         public string? Description { get; set; }
 
-        public float? Price { get; set; }
+        public float Price { get; set; }
 
     }
 }

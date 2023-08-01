@@ -8,7 +8,7 @@ namespace TicketingApp.Repository
     {
         IEnumerable<Order> GetAll();
 
-        Order GetOrderById(int id);
+        Task<Order> GetOrderById(int id);
 
         void Add(Order order);
 

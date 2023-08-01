@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TicketingApp.Models;
 using TicketingApp.Models.Dto;
 using TicketingApp.Models.Dto.Patches;
+using TicketingApp.Models.Dto.Posts;
 using TicketingApp.Repository;
 
 namespace TicketingApp.Controllers
@@ -13,6 +14,7 @@ namespace TicketingApp.Controllers
         private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
 
+
         public EventController(IEventRepository eventRepository, IMapper mapper)
         {
             _eventRepository = eventRepository;
@@ -20,9 +22,9 @@ namespace TicketingApp.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/GetEVentById")]
+        [Route("api/[controller]/GetEventById")]
 
-        public ActionResult<EventDto> GetById(int id)
+        public async Task<ActionResult<EventDto>> GetById(int id)
         {
             var ev = _eventRepository.GetEventById(id);
             var eventDto = _mapper.Map<EventDto>(ev);
@@ -41,7 +43,7 @@ namespace TicketingApp.Controllers
         [HttpDelete]
         [Route("api/[controller]/Delete")]
 
-        public async Task<ActionResult<EventDto>> Delete(int eventId)
+        public ActionResult<EventDto> Delete(int eventId)
         {
             var eventEntity =  _eventRepository.GetEventById(eventId);
             if(eventEntity != null)
@@ -56,11 +58,11 @@ namespace TicketingApp.Controllers
 
         [HttpPatch]
         [Route("api/[controller]/EventPatch")]
-        public async Task<ActionResult<EventPatchDto>> Patch(EventPatchDto epd)
+        public ActionResult<EventPatchDto> Patch(EventPatchDto epd)
         {
             if(epd != null)
             {
-                var eventEntity =  _eventRepository.GetEventById(epd.EventId);
+                var eventEntity =   _eventRepository.GetEventById(epd.EventId);
                 if(eventEntity != null)
                 {
                     _mapper.Map(epd, eventEntity);
@@ -70,5 +72,30 @@ namespace TicketingApp.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost]
+        [Route("api/[controller]/EventPost")]
+        public async Task<ActionResult<EventPost>> Post(EventPost ev)
+        {
+
+            try
+            {
+                var eventEntity = _mapper.Map<Event>(ev);
+
+                _eventRepository.Add(eventEntity);
+
+                var eventDto = _mapper.Map<EventPost>(eventEntity);
+
+                return CreatedAtAction(nameof(EventController.GetById), new { id = eventDto.EventId }, eventDto);
+            }
+            
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + Environment.NewLine + ex.StackTrace);
+                return BadRequest(ModelState);
+            }
+        }
+        
+
     }
 }
