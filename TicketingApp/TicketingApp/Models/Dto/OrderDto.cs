@@ -2,7 +2,12 @@
 {
     public class OrderDto
     {
+        public string eventName {get;set;}
         public int OrderId { get; set; }
+
+        public string clientName { get; set;}
+
+        public string ticketType { get; set; }
 
         public int CustomerId { get; set; }
 
@@ -15,5 +20,6 @@
         public double? TotalPrice { get; set; }
 
         public CustomerDto customer { get; set; }
+    
     }
 }

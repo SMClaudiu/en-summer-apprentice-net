@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TicketingApp.Models;
 using TicketingApp.Models.Dto;
@@ -7,8 +8,9 @@ using TicketingApp.Models.Dto.Posts;
 using TicketingApp.Repository;
 
 namespace TicketingApp.Controllers
-{
+{   
     [ApiController]
+    [EnableCors]
     public class EventController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;

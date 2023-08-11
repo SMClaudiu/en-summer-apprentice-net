@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketingApp.Models;
@@ -10,6 +11,7 @@ using TicketingApp.Repository;
 namespace TicketingApp.Controllers
 {
     [ApiController]
+    [EnableCors]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;

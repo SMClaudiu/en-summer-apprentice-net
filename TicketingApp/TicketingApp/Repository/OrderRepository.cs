@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 
 using TicketingApp.Models;
+using TicketingApp.Models.Dto;
 using TicketingApp.Repository;
 
 namespace TicketingApp.Repository
@@ -55,7 +56,7 @@ namespace TicketingApp.Repository
 
         public  IEnumerable<Order> GetAll()
         {
-            var tempOrders =  _dbContext.Orders.Include(o=>o.Customer);
+            var tempOrders =  _dbContext.Orders.Include(o=>o.Customer).Include(o => o.TicketCategory).ThenInclude(e=>e.Event).Include(o=>o.TicketCategory);
             if(tempOrders != null)
             {
                 return tempOrders;
@@ -67,7 +68,7 @@ namespace TicketingApp.Repository
         {
             try
             {
-                var order = await _dbContext.Orders.Include(o => o.Customer).FirstOrDefaultAsync(o => o.OrderId == id);
+                var order = await _dbContext.Orders.Include(o => o.Customer).Include(o => o.TicketCategory).ThenInclude(e => e.Event).Include(o => o.TicketCategory).FirstOrDefaultAsync(o => o.OrderId == id);
                 if (order != null)
                 {
                     return order;

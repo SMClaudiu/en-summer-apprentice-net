@@ -18,10 +18,17 @@ namespace TicketingApp.Profiles
 
             CreateMap<TicketCategory, TicketCategoryDto>().ReverseMap();
 
+            
+
             CreateMap<Venue, VenueDto>().ReverseMap();
-            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<Order, OrderDto>()
+                .ForMember(dest=>dest.ticketType, opt=>opt.MapFrom(src=>src.TicketCategory.Description))
+                .ForMember(dest=>dest.clientName, opt=>opt.MapFrom(src=>src.Customer.Name))
+                .ForMember(dest => dest.eventName, opt=>opt.MapFrom(src=>src.TicketCategory.Event.Name)).ReverseMap();
             CreateMap<Order, OrderPatchDto>().ReverseMap();
             CreateMap<Order, OrderPost>().ReverseMap();
         }
     }
 }
+
+//.ForMember(o => o.eventName, eve => eve.MapFrom(src => src.TicketCategory.Event.Name))
