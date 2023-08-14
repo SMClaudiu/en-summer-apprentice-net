@@ -10,7 +10,7 @@ namespace TicketingApp.Repository
 
         Task<Order> GetOrderById(int id);
 
-        void Add(Order order);
+        void AddAsync(Order order);
 
         void Update(Order order);
 

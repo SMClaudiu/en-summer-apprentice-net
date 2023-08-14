@@ -1,16 +1,11 @@
-﻿using Microsoft.Identity.Client;
+﻿    using Microsoft.Identity.Client;
 
-namespace TicketingApp.Models.Dto.Posts
-{
-    public class OrderPost
+    namespace TicketingApp.Models.Dto.Posts
     {
-        public int CustomerId { get; set; }
-        public String customerName { get; set; }
-
-        public int ticketCategoryId { get; set; }
-
-        public int numberOfTickets { get; set; }
-
-
+        public class OrderPost
+        {   
+            public int CustomerId { get; set; }
+            public int ticketCategoryId { get; set; }
+            public int numberOfTickets { get; set; }
+        }
     }
-}

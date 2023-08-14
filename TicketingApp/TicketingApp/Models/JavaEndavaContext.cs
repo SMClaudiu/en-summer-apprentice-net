@@ -83,6 +83,7 @@ public partial class JavaEndavaContext : DbContext
             entity.HasOne(d => d.Venue).WithMany(p => p.Events)
                 .HasForeignKey(d => d.VenueId)
                 .HasConstraintName("FK_event_venueId");
+           
         });
 
         modelBuilder.Entity<EventType>(entity =>
@@ -111,15 +112,9 @@ public partial class JavaEndavaContext : DbContext
             entity.Property(e => e.TicketCategoryId).HasColumnName("ticketCategoryId");
             entity.Property(e => e.TotalPrice).HasColumnName("totalPrice");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_orders_customer");
+    
 
-            entity.HasOne(d => d.TicketCategory).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.TicketCategoryId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_orders_ticketCategoryId");
+
         });
 
         modelBuilder.Entity<TicketCategory>(entity =>

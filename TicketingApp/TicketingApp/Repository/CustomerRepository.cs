@@ -38,12 +38,10 @@ namespace TicketingApp.Repository
         {
             try
             {
-                var customer = await _context.Customers.Where(c => c.CustomerId == id).FirstOrDefaultAsync();
-                if(customer != null)
-                {
-                    return customer;
-                }
-                return null;
+                
+                //var customer = await _context.Customers.Where(c => c.Name.Trim() == customerName.Trim()).FirstOrDefaultAsync();
+                var existentCustomer = await _context.Customers.Where(c => c.CustomerId == id).FirstOrDefaultAsync();
+                return existentCustomer;
             }
             catch (Exception ex)
             {

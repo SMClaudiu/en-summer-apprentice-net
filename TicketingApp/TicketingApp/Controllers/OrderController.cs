@@ -92,12 +92,22 @@ namespace TicketingApp.Controllers
                 return NotFound();
             }
             double totalPrice = op.numberOfTickets * ticketCategory.Price;
+
             if (totalPrice == null)
             {
                 return NotFound();
             }
-            var tempOrder = _mapper.Map<Order>(op);
-            _orderRepository.Add(tempOrder);
+
+            var tempOrder = _mapper.Map<Order>(op); // Use AutoMapper to map OrderPost to Order
+            tempOrder.TotalPrice = totalPrice; // Set the total price
+            if (customer != null)
+            {
+                //tempOrder.Customer = customer;
+                //tempOrder.CustomerId = customer.CustomerId; // Set the CustomerId property
+             //   tempOrder.TicketCategory = ticketCategory;
+            }
+            _orderRepository.AddAsync(tempOrder);
+
             return Ok(tempOrder);
 
         }

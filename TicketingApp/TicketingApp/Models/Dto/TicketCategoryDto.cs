@@ -1,7 +1,8 @@
 ﻿namespace TicketingApp.Models.Dto
 {
     public class TicketCategoryDto
-    {
+    {   
+        public int ticketCategoryId { get; set; }
 
         public string? Description { get; set; }
 

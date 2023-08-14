@@ -33,11 +33,7 @@ namespace TicketingApp.Repository
             try
             {
                 var ticket = await _context.TicketCategories.Where(tc => tc.TicketCategoryId == id).FirstOrDefaultAsync();
-                if (ticket != null)
-                {
-                    return ticket;
-                }
-                return null;
+                return ticket;
             }
             catch(Exception ex)
             {

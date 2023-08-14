@@ -10,31 +10,21 @@ namespace TicketingApp.Repository
     public class OrderRepository : IOrderRepository
     {
         private readonly JavaEndavaContext _dbContext;
+        private object _ticketCategoryRepository;
+        private object _customerRepository;
 
-        public OrderRepository()
+        public OrderRepository(ITicketCategoryRepository ticketCategoryRepository, ICustomerRepository customerRepository)
         {
             _dbContext = new JavaEndavaContext();
+            //_ticketCategoryRepository = ticketCategoryRepository;
+            //_customerRepository = customerRepository;
         }
 
-        public void Add(Order order)
-        {
-            try
-            {
-                var tempOrder = GetOrderById(order.OrderId);
-                if (tempOrder == null)
-                {
-                    _dbContext.Add(order);
-                    _dbContext.SaveChanges();
-                }
-                else
-                {
-                    Console.WriteLine("The order already exists");
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message + Environment.NewLine);
+        public void AddAsync (Order order)
+        {   
+            if(order.CustomerId != null) { 
+             _dbContext.Orders.Add(order);  
+             _dbContext.SaveChanges();
             }
         }
 
@@ -56,6 +46,7 @@ namespace TicketingApp.Repository
 
         public  IEnumerable<Order> GetAll()
         {
+
             var tempOrders =  _dbContext.Orders.Include(o=>o.Customer).Include(o => o.TicketCategory).ThenInclude(e=>e.Event).Include(o=>o.TicketCategory);
             if(tempOrders != null)
             {

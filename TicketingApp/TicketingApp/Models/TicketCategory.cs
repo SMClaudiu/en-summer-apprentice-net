@@ -15,5 +15,5 @@ public partial class TicketCategory
 
     public virtual Event? Event { get; set; }
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    //public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }
