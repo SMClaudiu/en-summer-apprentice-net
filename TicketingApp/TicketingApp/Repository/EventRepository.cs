@@ -52,7 +52,7 @@ namespace TicketingApp.Repository
         {
             try
             {
-                var ev =  _dbContext.Events.Include(e=> e.Venue).Include(et=> et.EventType).FirstOrDefault(e => e.EventId == id);
+                var ev =  _dbContext.Events.Include(e=> e.Venue).Include(et=> et.EventType).Include(tc => tc.TicketCategories).FirstOrDefault(e => e.EventId == id);
                 if (ev != null)
                 {
                     return ev;

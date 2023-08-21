@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using TicketingApp.Models;
+using TicketingApp.Models.Dto;
 using TicketingApp.Repository;
 
 namespace TicketingApp.Repository

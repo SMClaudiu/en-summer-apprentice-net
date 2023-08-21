@@ -1,4 +1,5 @@
 ﻿using TicketingApp.Models;
+using TicketingApp.Models.Dto;
 
 namespace TicketingApp.Repository
 {

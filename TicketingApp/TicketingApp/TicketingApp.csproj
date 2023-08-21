@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Models\Dto\EventDto2.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@ namespace TicketingApp.Repository
 {
     public interface ICustomerRepository
     {
-        IEnumerable<Customer> GetAll();
+        Task<IEnumerable<Customer>> GetAll();
 
         Task<Customer> GetById(int id);
     }

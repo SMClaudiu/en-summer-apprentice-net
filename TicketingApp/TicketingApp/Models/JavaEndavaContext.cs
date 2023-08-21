@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using TicketingApp.Models.Dto;
+
 
 namespace TicketingApp.Models;
 
@@ -75,10 +77,6 @@ public partial class JavaEndavaContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("startDate");
             entity.Property(e => e.VenueId).HasColumnName("venueId");
-
-            entity.HasOne(d => d.EventType).WithMany(p => p.Events)
-                .HasForeignKey(d => d.EventTypeId)
-                .HasConstraintName("FK_event_eventType");
 
             entity.HasOne(d => d.Venue).WithMany(p => p.Events)
                 .HasForeignKey(d => d.VenueId)

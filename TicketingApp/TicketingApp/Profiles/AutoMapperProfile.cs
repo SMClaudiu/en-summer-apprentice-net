@@ -12,22 +12,25 @@ namespace TicketingApp.Profiles
         public AutoMapperProfile() { 
             CreateMap<Customer, CustomerDto>().ReverseMap();
 
-            CreateMap<Event, EventDto>().ForMember(e => e.TicketCategories, tg => tg.MapFrom(src => src.TicketCategories)).ReverseMap();
+            CreateMap<Event, EventDto>()
+                .ForMember(dest => dest.EventType, src => src.MapFrom(src => src.EventType))
+                .ForMember(e => e.TicketCategories, tg => tg.MapFrom(src => src.TicketCategories)).ReverseMap();
 
             CreateMap<Event, EventPost>().ReverseMap();
             CreateMap<Event, EventPatchDto>().ReverseMap();
 
             CreateMap<TicketCategory, TicketCategoryDto>().ReverseMap();
 
-            
+            CreateMap<EventType, EventTypeDto>()
+                .ReverseMap();
 
             CreateMap<Venue, VenueDto>().ReverseMap();
+
+            CreateMap<OrderDelete, OrderDto>().ReverseMap();
             CreateMap<Order, OrderDto>()
-                .ForMember(dest=>dest.ticketType, opt=>opt.MapFrom(src=>src.TicketCategory.Description))
                 .ForMember(dest => dest.EventId, opt => opt.MapFrom(src => src.TicketCategory.EventId))
-                .ForMember(dest=>dest.clientName, opt=>opt.MapFrom(src=>src.Customer.Name))
-                .ForMember(dest=> dest.CustomerId, opt=> opt.MapFrom(src=>src.Customer.CustomerId))
-                .ForMember(dest => dest.eventName, opt=>opt.MapFrom(src=>src.TicketCategory.Event.Name)).ReverseMap();
+                .ForMember(dest => dest.eventName, opt=>opt.MapFrom(src=>src.TicketCategory.Event.Name))
+                .ReverseMap();
             CreateMap<Order, OrderPatchDto>().ReverseMap();
             CreateMap<Order, OrderPost>()
                 .ReverseMap();

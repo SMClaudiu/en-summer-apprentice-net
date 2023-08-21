@@ -10,8 +10,8 @@ using TicketingApp.Repository;
 
 namespace TicketingApp.Controllers
 {
-    [ApiController]
-    [EnableCors]
+   [ApiController]
+    [EnableCors] 
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
@@ -51,7 +51,7 @@ namespace TicketingApp.Controllers
 
         [HttpDelete]
         [Route("api/[controller]/Delete")]
-        public async Task<ActionResult<OrderDto>> Delete(int id)
+        public async Task<ActionResult<OrderDelete>> Delete(int id)
         {
             var orderEntity = await _orderRepository.GetOrderById(id);
             if (orderEntity != null)
@@ -69,13 +69,19 @@ namespace TicketingApp.Controllers
         {
             if(opd != null)
             {
-                var orderEntity =  await _orderRepository.GetOrderById(opd.OrderId);
-                if (orderEntity != null)
+                TicketCategory ticketCategory = await _ticketCategoryRepository.GetById(opd.TicketCategoryId);
+                var orderEntity =  await _orderRepository.GetOrderById(opd.OrderId);                
+                if (ticketCategory == null || orderEntity == null)
                 {
-                    _mapper.Map(opd, orderEntity);
-                    _orderRepository.Update(orderEntity);
+                    return NotFound();
                 }
-                return NoContent();
+                var totalPrice = opd.NumberOfTickets * ticketCategory.Price;
+
+                orderEntity.TotalPrice = totalPrice;
+                orderEntity.OrderedAt = System.DateTime.Now;
+                _mapper.Map(opd, orderEntity);
+                _orderRepository.Update(orderEntity);
+                return Ok(orderEntity);
             }
             return NotFound();
         }
@@ -98,14 +104,8 @@ namespace TicketingApp.Controllers
                 return NotFound();
             }
 
-            var tempOrder = _mapper.Map<Order>(op); // Use AutoMapper to map OrderPost to Order
-            tempOrder.TotalPrice = totalPrice; // Set the total price
-            if (customer != null)
-            {
-                //tempOrder.Customer = customer;
-                //tempOrder.CustomerId = customer.CustomerId; // Set the CustomerId property
-             //   tempOrder.TicketCategory = ticketCategory;
-            }
+            var tempOrder = _mapper.Map<Order>(op);
+            tempOrder.TotalPrice = totalPrice; 
             _orderRepository.AddAsync(tempOrder);
 
             return Ok(tempOrder);

@@ -15,7 +15,7 @@ namespace TicketingApp.Repository
 
         }
 
-        public IEnumerable<Customer> GetAll()
+        public async Task<IEnumerable<Customer>> GetAll()
         {
             try
             {
@@ -38,8 +38,6 @@ namespace TicketingApp.Repository
         {
             try
             {
-                
-                //var customer = await _context.Customers.Where(c => c.Name.Trim() == customerName.Trim()).FirstOrDefaultAsync();
                 var existentCustomer = await _context.Customers.Where(c => c.CustomerId == id).FirstOrDefaultAsync();
                 return existentCustomer;
             }

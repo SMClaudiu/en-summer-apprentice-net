@@ -79,7 +79,7 @@ namespace TicketingApp.Repository
             try
             {
                 //_dbContext.Update(order); care e diferenta
-                var tempOrder = GetOrderById(order.OrderId);
+                var tempOrder = await GetOrderById(order.OrderId);
                 if (tempOrder != null)
                 {
                     _dbContext.Entry(tempOrder).State = EntityState.Modified;
