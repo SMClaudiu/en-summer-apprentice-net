@@ -2,37 +2,37 @@
 using Microsoft.Extensions.Logging;
 
 using TicketingApp.Models;
+using TicketingApp.Models.Dto;
+using TicketingApp.Repository;
 
 namespace TicketingApp.Repository
 {
     public class OrderRepository : IOrderRepository
     {
         private readonly JavaEndavaContext _dbContext;
+        private object _ticketCategoryRepository;
+        private object _customerRepository;
 
-        public OrderRepository()
+        public OrderRepository(ITicketCategoryRepository ticketCategoryRepository, ICustomerRepository customerRepository)
         {
             _dbContext = new JavaEndavaContext();
+            //_ticketCategoryRepository = ticketCategoryRepository;
+            //_customerRepository = customerRepository;
         }
 
-        public void Add(Order order)
-        {
-            try
-            {
-                _dbContext.Add(order);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message + Environment.NewLine);
+        public void AddAsync (Order order)
+        {   
+            if(order.CustomerId != null) { 
+             _dbContext.Orders.Add(order);  
+             _dbContext.SaveChanges();
             }
         }
 
-        public void Delete(int id)
+        public void Delete(Order order)
         {
             try
             {
-                var order = GetOrderById(id);
-                if (order != null)
+                if (GetOrderById(order.OrderId) != null)
                 {
                     _dbContext.Orders.Remove(order);
                     _dbContext.SaveChanges();
@@ -44,16 +44,22 @@ namespace TicketingApp.Repository
             }
         }
 
-        public IEnumerable<Order> GetAll()
+        public  IEnumerable<Order> GetAll()
         {
-            throw new NotImplementedException();
-        }
 
-        public Order GetOrderById(int id)
+            var tempOrders =  _dbContext.Orders.Include(o=>o.Customer).Include(o => o.TicketCategory).ThenInclude(e=>e.Event).Include(o=>o.TicketCategory);
+            if(tempOrders != null)
+            {
+                return tempOrders;
+            }
+            return null;
+        }   
+
+        public async Task<Order> GetOrderById(int id)
         {
             try
             {
-                var order = _dbContext.Orders.FirstOrDefault(o => o.OrderId == id);
+                var order = await _dbContext.Orders.Include(o => o.Customer).Include(o => o.TicketCategory).ThenInclude(e => e.Event).Include(o => o.TicketCategory).FirstOrDefaultAsync(o => o.OrderId == id);
                 if (order != null)
                 {
                     return order;
@@ -68,12 +74,12 @@ namespace TicketingApp.Repository
 
         }
 
-        public void Update(Order order)
+        public async void Update(Order order)
         {
             try
             {
                 //_dbContext.Update(order); care e diferenta
-                var tempOrder = GetOrderById(order.OrderId);
+                var tempOrder = await GetOrderById(order.OrderId);
                 if (tempOrder != null)
                 {
                     _dbContext.Entry(tempOrder).State = EntityState.Modified;

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TicketingApp.Models;
-
+using TicketingApp.Models.Dto;
+using TicketingApp.Models.Dto.Posts;
 
 namespace TicketingApp.Repository
 {
@@ -9,10 +10,10 @@ namespace TicketingApp.Repository
     {
         IEnumerable<Event> GetAll();
 
-        Event GetOrderById(int id);
+        Event GetEventById(int id);
 
         void Add(Event ev);
         void Update(Event ev);
-        void Delete(int id);
+        void Delete(Event ev);        
     }
 }

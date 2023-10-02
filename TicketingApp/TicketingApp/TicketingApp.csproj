@@ -1,10 +1,38 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Dto\NewFolder2\**" />
+    <Compile Remove="Models\Dto\NewFolder\**" />
+    <Compile Remove="NewFolder1\**" />
+    <Compile Remove="Repository\Interfaces\**" />
+    <Compile Remove="Repository\Repos\**" />
+    <Content Remove="Models\Dto\NewFolder2\**" />
+    <Content Remove="Models\Dto\NewFolder\**" />
+    <Content Remove="NewFolder1\**" />
+    <Content Remove="Repository\Interfaces\**" />
+    <Content Remove="Repository\Repos\**" />
+    <EmbeddedResource Remove="Models\Dto\NewFolder2\**" />
+    <EmbeddedResource Remove="Models\Dto\NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder1\**" />
+    <EmbeddedResource Remove="Repository\Interfaces\**" />
+    <EmbeddedResource Remove="Repository\Repos\**" />
+    <None Remove="Models\Dto\NewFolder2\**" />
+    <None Remove="Models\Dto\NewFolder\**" />
+    <None Remove="NewFolder1\**" />
+    <None Remove="Repository\Interfaces\**" />
+    <None Remove="Repository\Repos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Models\Dto\EventDto2.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

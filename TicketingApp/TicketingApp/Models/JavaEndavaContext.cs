@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using TicketingApp.Models.Dto;
+
 
 namespace TicketingApp.Models;
 
@@ -76,13 +78,10 @@ public partial class JavaEndavaContext : DbContext
                 .HasColumnName("startDate");
             entity.Property(e => e.VenueId).HasColumnName("venueId");
 
-            entity.HasOne(d => d.EventType).WithMany(p => p.Events)
-                .HasForeignKey(d => d.EventTypeId)
-                .HasConstraintName("FK_event_eventType");
-
             entity.HasOne(d => d.Venue).WithMany(p => p.Events)
                 .HasForeignKey(d => d.VenueId)
                 .HasConstraintName("FK_event_venueId");
+           
         });
 
         modelBuilder.Entity<EventType>(entity =>
@@ -111,24 +110,18 @@ public partial class JavaEndavaContext : DbContext
             entity.Property(e => e.TicketCategoryId).HasColumnName("ticketCategoryId");
             entity.Property(e => e.TotalPrice).HasColumnName("totalPrice");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_orders_customer");
+    
 
-            entity.HasOne(d => d.TicketCategory).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.TicketCategoryId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_orders_ticketCategoryId");
+
         });
 
         modelBuilder.Entity<TicketCategory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TicketCa__56F2E61A9C38E058");
+            entity.HasKey(e => e.TicketCategoryId).HasName("PK__TicketCa__56F2E61A9C38E058");
 
             entity.ToTable("TicketCategory");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.TicketCategoryId).HasColumnName("ticketCategoryId");
             entity.Property(e => e.Description)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -153,9 +146,9 @@ public partial class JavaEndavaContext : DbContext
 
         modelBuilder.Entity<Venue>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Venues__4DDFB6FFCEE31BB4");
+            entity.HasKey(e => e.VenueId).HasName("PK__Venues__4DDFB6FFCEE31BB4");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.VenueId).HasColumnName("venueId");
             entity.Property(e => e.Capacity).HasColumnName("capacity");
             entity.Property(e => e.Location)
                 .HasMaxLength(50)

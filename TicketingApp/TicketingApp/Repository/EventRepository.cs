@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using TicketingApp.Models;
+using TicketingApp.Models.Dto.Posts;
+using TicketingApp.Repository;
 
 namespace TicketingApp.Repository
 {
@@ -17,9 +20,16 @@ namespace TicketingApp.Repository
         {
             try
             {
-                _dbContext.Events.Add(ev);
-                _dbContext.SaveChanges();
-
+                var tempEv = GetEventById(ev.EventId);
+                if(tempEv == null)
+                {
+                    _dbContext.Events.Add(ev);
+                    _dbContext.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("The event already exists");
+                }
             }
             catch (Exception ex)
             {
@@ -27,11 +37,22 @@ namespace TicketingApp.Repository
             }
         }
 
-        public Event GetOrderById(int id)
+        public IEnumerable<Event> GetAll()
+        {
+            var ev = _dbContext.Events.Include(e => e.Venue).Include(et => et.EventType).Include(tc=> tc.TicketCategories);
+
+            if (ev != null)
+            {
+                return ev;
+            }
+            return null;
+        }
+
+        public Event GetEventById(int id)
         {
             try
             {
-                var ev = _dbContext.Events.FirstOrDefault(e => e.EventId == id);
+                var ev =  _dbContext.Events.Include(e=> e.Venue).Include(et=> et.EventType).Include(tc => tc.TicketCategories).FirstOrDefault(e => e.EventId == id);
                 if (ev != null)
                 {
                     return ev;
@@ -45,35 +66,19 @@ namespace TicketingApp.Repository
             }
         }
 
-        public void Delete(int id)
+        public async void Delete(Event ev)
         {
-            try
-            {
-                var ev = GetOrderById(id);
-                if (ev != null)
-                {
-                    _dbContext.Events.Remove(ev);
-                    _dbContext.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message + Environment.NewLine);
+            if(GetEventById(ev.EventId) != null) {
+                _dbContext.Remove(ev);
+                _dbContext.SaveChanges(true);
             }
         }
 
-        public IEnumerable<Event> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public void Update(Event ev)
+        public async void Update(Event ev)
         {
             try
             {
-                var tempEv = GetOrderById(ev.EventId);
+                var tempEv = GetEventById(ev.EventId);
                 if (tempEv != null)
                 {
                     _dbContext.Entry(tempEv).State = EntityState.Modified;
@@ -85,5 +90,6 @@ namespace TicketingApp.Repository
                 Console.WriteLine(ex.Message + Environment.NewLine);
             }
         }
+
     }
 }
