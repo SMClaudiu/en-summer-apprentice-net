@@ -17,6 +17,7 @@ namespace TicketingApp.Profiles
                 .ForMember(e => e.TicketCategories, tg => tg.MapFrom(src => src.TicketCategories)).ReverseMap();
 
             CreateMap<Event, EventPost>().ReverseMap();
+
             CreateMap<Event, EventPatchDto>().ReverseMap();
 
             CreateMap<TicketCategory, TicketCategoryDto>().ReverseMap();
@@ -27,14 +28,15 @@ namespace TicketingApp.Profiles
             CreateMap<Venue, VenueDto>().ReverseMap();
 
             CreateMap<OrderDelete, OrderDto>().ReverseMap();
+
             CreateMap<Order, OrderDto>()
                 .ForMember(dest => dest.EventId, opt => opt.MapFrom(src => src.TicketCategory.EventId))
                 .ForMember(dest => dest.eventName, opt=>opt.MapFrom(src=>src.TicketCategory.Event.Name))
                 .ReverseMap();
             CreateMap<Order, OrderPatchDto>().ReverseMap();
+
             CreateMap<Order, OrderPost>()
                 .ReverseMap();
-            // Set null value for TotalPrice.ReverseMap();
         }
     }
 }
