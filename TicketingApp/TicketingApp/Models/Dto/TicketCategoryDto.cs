@@ -8,5 +8,7 @@
 
         public float Price { get; set; }
 
+        public virtual Event Event { get; set; }
+
     }
 }

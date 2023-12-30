@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TicketingApp.Models.Dto;
 
 namespace TicketingApp.Models;
 

@@ -13,11 +13,11 @@ namespace TicketingApp.Repository
         public TicketCategoryRepository() {
             _context = new JavaEndavaContext();
         }
-        public IEnumerable<TicketCategory> GetAll()
+        public async Task<IEnumerable<TicketCategory>> GetAll()
         {
             try
             {
-                var tempTickets = _context.TicketCategories;
+                var tempTickets = _context.TicketCategories.Include(e => e.Event);
                 if (tempTickets != null)
                 {
                     return tempTickets;

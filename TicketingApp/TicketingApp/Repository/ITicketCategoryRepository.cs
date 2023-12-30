@@ -5,7 +5,7 @@ namespace TicketingApp.Repository
 {
     public interface ITicketCategoryRepository
     {
-        IEnumerable<TicketCategory> GetAll();
+        Task<IEnumerable<TicketCategory>> GetAll();
 
         Task<TicketCategory> GetById(int id);
 

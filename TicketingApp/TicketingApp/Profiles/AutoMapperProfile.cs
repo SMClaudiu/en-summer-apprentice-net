@@ -20,7 +20,9 @@ namespace TicketingApp.Profiles
 
             CreateMap<Event, EventPatchDto>().ReverseMap();
 
-            CreateMap<TicketCategory, TicketCategoryDto>().ReverseMap();
+            CreateMap<TicketCategory, TicketCategoryDto>()
+                .ForMember(e=> e.Event, tg =>tg.MapFrom(src =>src.Event))
+                .ReverseMap();
 
             CreateMap<EventType, EventTypeDto>()
                 .ReverseMap();
